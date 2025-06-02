@@ -1,7 +1,7 @@
 # monitoring/alertmanager.yml
 global:
   smtp_smarthost: "localhost:587"
-  smtp_from: "alerts@yourcompany.com"
+  smtp_from: "sfanta087@gmail.com"
 
 route:
   group_by: ["alertname"]
@@ -18,7 +18,7 @@ receivers:
 
   - name: "email"
     email_configs:
-      - to: "admin@yourcompany.com"
+      - to: "sfanta087@gmail.com"
         subject: "Alert: {{ .GroupLabels.alertname }}"
         body: |
           {{ range .Alerts }}
