@@ -1,0 +1,14 @@
+{
+  "model_type": "LogisticRegression",
+  "training_date": "2025-06-02T15:42:07.890170",
+  "accuracy": 0.7610325519597608,
+  "classes": [
+    "Anxiety",
+    "Bipolar",
+    "Depression",
+    "Normal",
+    "Personality disorder",
+    "Stress",
+    "Suicidal"
+  ]
+}

@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/sfant/Desktop/myself/me/mlruns/0/8fa2303b713148f7ab736fe9ff28b46b/artifacts
+end_time: 1748875327894
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 8fa2303b713148f7ab736fe9ff28b46b
+run_name: whimsical-ox-359
+run_uuid: 8fa2303b713148f7ab736fe9ff28b46b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748875286546
+status: 3
+tags: []
+user_id: sfant
