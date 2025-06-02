@@ -267,3 +267,56 @@ class ModelMonitor:
             'severity': severity,
             'service': 'sentiment-classifier'
         }
+        
+        # Log alert
+        logger.warning(f"ALERT [{severity.upper()}]: {message}")
+        
+        # Send to webhook (if configured)
+        webhook_url = os.getenv('ALERT_WEBHOOK_URL')
+        if webhook_url:
+            try:
+                requests.post(webhook_url, json=alert_data)
+            except Exception as e:
+                logger.error(f"Failed to send alert webhook: {e}")
+
+def main():
+    """Main monitoring function"""
+    monitor = ModelMonitor()
+    
+    logger.info("Starting model monitoring check...")
+    
+    # Generate monitoring report
+    report = monitor.generate_monitoring_report()
+    
+    # Check for alerts
+    if 'drift_analysis' in report and report['drift_analysis']['drift_detected']:
+        monitor.send_alert(
+            f"Model drift detected! Drift score: {report['drift_analysis']['drift_score']:.4f}",
+            severity='warning'
+        )
+    
+    if 'accuracy_7_days' in report and report['accuracy_7_days'] < 0.8:
+        monitor.send_alert(
+            f"Model accuracy dropped to {report['accuracy_7_days']:.4f}",
+            severity='critical'
+        )
+    
+    if 'avg_confidence_7_days' in report and report['avg_confidence_7_days'] < 0.7:
+        monitor.send_alert(
+            f"Average prediction confidence dropped to {report['avg_confidence_7_days']:.4f}",
+            severity='warning'
+        )
+    
+    # Save report
+    os.makedirs('reports', exist_ok=True)
+    with open(f"reports/monitoring_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json", 'w') as f:
+        json.dump(report, f, indent=2)
+    
+    logger.info("Monitoring check completed")
+    
+    return report
+
+if __name__ == "__main__":
+    main()
+
+
