@@ -1,13 +1,13 @@
 # app.py
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException # type: ignore
+from pydantic import BaseModel # type: ignore
 import joblib
-import pandas as pd
+import pandas as pd # type: ignore
 import numpy as np
 from typing import List, Dict
 import logging
-from prometheus_client import Counter, Histogram, generate_latest
-from fastapi.responses import PlainTextResponse
+from prometheus_client import Counter, Histogram, generate_latest # type: ignore
+from fastapi.responses import PlainTextResponse # type: ignore
 import time
 import os
 
@@ -145,5 +145,5 @@ async def root():
     return {"message": "Sentiment Classification API", "version": "1.0.0"}
 
 if __name__ == "__main__":
-    import uvicorn
+    import uvicorn # type: ignore
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,0 +1,23 @@
+# k8s/staging/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sentiment-classifier-service
+  namespace: staging
+  labels:
+    app: sentiment-classifier
+    environment: staging
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
+    prometheus.io/path: "/metrics"
+spec:
+  selector:
+    app: sentiment-classifier
+    environment: staging
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP

@@ -1,5 +1,5 @@
 # scripts/model_monitoring.py
-import pandas as pd
+import pandas as pd # type: ignore
 import numpy as np
 from sklearn.metrics import accuracy_score, classification_report
 import joblib
@@ -10,7 +10,7 @@ import sqlite3
 from typing import Dict, List, Tuple
 import requests
 import os
-from prometheus_client import Gauge, Counter
+from prometheus_client import Gauge, Counter # type: ignore
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

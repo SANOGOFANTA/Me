@@ -113,7 +113,16 @@ download-models: ## Download pre-trained models (if applicable)
 # Deployment targets
 deploy-staging: docker-build ## Deploy to staging
 	echo "Deploying to staging..."
-	# Add staging deployment commands
+	chmod +x scripts/deploy-staging.sh
+	./scripts/deploy-staging.sh
+
+test-staging: ## Test staging deployment
+	chmod +x scripts/test-staging.sh
+	./scripts/test-staging.sh
+
+rollback-staging: ## Rollback staging deployment
+	chmod +x scripts/rollback-staging.sh
+	./scripts/rollback-staging.sh
 
 deploy-prod: docker-build ## Deploy to production
 	echo "Deploying to production..."

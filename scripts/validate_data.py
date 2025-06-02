@@ -1,5 +1,5 @@
 # scripts/validate_data.py
-import pandas as pd
+import pandas as pd # type: ignore
 import numpy as np
 import logging
 from pathlib import Path

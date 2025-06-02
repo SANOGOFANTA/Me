@@ -1,9 +1,10 @@
 # scripts/data_quality_checks.py
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from collections import Counter
+from typing import Dict
+import pandas as pd # type: ignore
+import numpy as np # type: ignore
+import matplotlib.pyplot as plt # type: ignore
+import seaborn as sns # type: ignore
+from collections import Counter # type: ignore
 import re
 import logging
 from pathlib import Path

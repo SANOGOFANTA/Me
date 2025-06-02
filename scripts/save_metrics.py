@@ -3,7 +3,7 @@ import json
 import os
 import joblib
 from datetime import datetime
-import pandas as pd
+import pandas as pd # type: ignore
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score
 import logging

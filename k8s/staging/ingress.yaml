@@ -1,0 +1,28 @@
+# k8s/staging/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sentiment-classifier-ingress
+  namespace: staging
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "1000"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1h"
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+spec:
+  tls:
+    - hosts:
+        - staging-api.yourdomain.com
+      secretName: sentiment-classifier-staging-tls
+  rules:
+    - host: staging-api.yourdomain.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sentiment-classifier-service
+                port:
+                  number: 80

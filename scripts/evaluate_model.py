@@ -1,13 +1,13 @@
 # scripts/evaluate_model.py
-import pandas as pd
+import pandas as pd  # type: ignore
 import numpy as np
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score,
     confusion_matrix, classification_report, roc_auc_score
 )
 import joblib
-import matplotlib.pyplot as plt
-import seaborn as sns
+import matplotlib.pyplot as plt # type: ignore
+import seaborn as sns  # type: ignore
 import json
 import os
 from datetime import datetime

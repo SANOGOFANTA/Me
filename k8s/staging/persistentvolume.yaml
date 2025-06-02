@@ -1,0 +1,13 @@
+# k8s/staging/persistentvolume.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: model-pvc
+  namespace: staging
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: fast-ssd

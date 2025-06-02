@@ -1,0 +1,42 @@
+# k8s/staging/networkpolicy.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sentiment-classifier-netpol
+  namespace: staging
+spec:
+  podSelector:
+    matchLabels:
+      app: sentiment-classifier
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+        - namespaceSelector:
+            matchLabels:
+              name: monitoring
+      ports:
+        - protocol: TCP
+          port: 8000
+  egress:
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443 # HTTPS
+        - protocol: TCP
+          port: 53 # DNS
+        - protocol: UDP
+          port: 53 # DNS
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: kube-system
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53

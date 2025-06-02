@@ -1,0 +1,100 @@
+# k8s/staging/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentiment-classifier
+  namespace: staging
+  labels:
+    app: sentiment-classifier
+    version: staging
+    environment: staging
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sentiment-classifier
+      environment: staging
+  template:
+    metadata:
+      labels:
+        app: sentiment-classifier
+        version: staging
+        environment: staging
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: sentiment-classifier
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: sentiment-classifier
+          image: your-registry.com/sentiment-classifier:staging
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: sentiment-config
+                  key: ENVIRONMENT
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: sentiment-config
+                  key: LOG_LEVEL
+            - name: API_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sentiment-config
+                  key: API_PORT
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sentiment-secrets
+                  key: API_KEY
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          volumeMounts:
+            - name: model-storage
+              mountPath: /app/models
+            - name: monitoring-storage
+              mountPath: /app/monitoring
+            - name: tmp-storage
+              mountPath: /tmp
+      volumes:
+        - name: model-storage
+          persistentVolumeClaim:
+            claimName: model-pvc
+        - name: monitoring-storage
+          persistentVolumeClaim:
+            claimName: monitoring-pvc
+        - name: tmp-storage
+          emptyDir: {}
+      terminationGracePeriodSeconds: 30

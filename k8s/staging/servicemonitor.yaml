@@ -1,0 +1,19 @@
+# k8s/staging/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: sentiment-classifier
+  namespace: staging
+  labels:
+    app: sentiment-classifier
+    environment: staging
+spec:
+  selector:
+    matchLabels:
+      app: sentiment-classifier
+      environment: staging
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s

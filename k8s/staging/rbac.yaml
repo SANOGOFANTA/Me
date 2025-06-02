@@ -1,0 +1,13 @@
+# k8s/staging/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sentiment-classifier-role
+  namespace: staging
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "configmaps", "secrets"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create"]

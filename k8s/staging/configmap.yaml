@@ -1,0 +1,13 @@
+# k8s/staging/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sentiment-config
+  namespace: staging
+data:
+  ENVIRONMENT: "staging"
+  LOG_LEVEL: "INFO"
+  API_PORT: "8000"
+  MODEL_REGISTRY: "your-registry.com"
+  ALERT_WEBHOOK_URL: "http://alertmanager:9093/api/v1/alerts"
+  MONITORING_DB_PATH: "/app/monitoring/model_logs.db"

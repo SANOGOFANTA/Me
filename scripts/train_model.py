@@ -1,5 +1,5 @@
 # scripts/train_model.py
-import pandas as pd
+import pandas as pd # type: ignore
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -9,8 +9,8 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 import joblib
 import os
 import logging
-import mlflow
-import mlflow.sklearn
+import mlflow # type: ignore
+import mlflow.sklearn # type: ignore
 from datetime import datetime
 import json
 
