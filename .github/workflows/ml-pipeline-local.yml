@@ -10,7 +10,7 @@ on:
     - cron: '0 2 * * 0'  # Weekly retraining
 
 env:
-  PYTHON_VERSION: '3.9'
+  PYTHON_VERSION: '3.13'
   # Pas de registry externe - on utilise GitHub Container Registry gratuit
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
