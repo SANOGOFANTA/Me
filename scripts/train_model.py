@@ -170,7 +170,7 @@ def main():
             mlflow.log_metric("f1_macro", metrics['classification_report']['macro avg']['f1-score'])
             
             # Log model
-            mlflow.sklearn.log_model(model, artifact_path="C:\\Users\\hp\\Documents\\GitHub\\Me\\artifacts")
+            mlflow.sklearn.log_model(model, artifact_path="artifacts")
             
             # Save model
             save_model(model, vectorizer, metrics)
