@@ -35,7 +35,7 @@ jobs:
         python-version: ${{ env.PYTHON_VERSION }}
         
     - name: Cache Python dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
@@ -94,7 +94,7 @@ jobs:
         
     - name: Create sample data (if not exists)
       run: |
-        if [ ! -f "data/sentiment_data.csv" ]; then
+        if [ ! -f "data/Mentalhealth.csv" ]; then
           python scripts/setup_environment.py
         fi
         
@@ -109,7 +109,7 @@ jobs:
         python scripts/data_quality_checks.py || true
         
     - name: Upload data reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: data-reports
         path: reports/
@@ -151,7 +151,7 @@ jobs:
         python scripts/save_metrics.py
         
     - name: Upload model artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: trained-model
         path: |
@@ -191,16 +191,16 @@ jobs:
       uses: actions/checkout@v4
       
     - name: Download model artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: trained-model
         path: .
         
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      uses: docker/setup-buildx-action@v4
       
     - name: Log in to GitHub Container Registry
-      uses: docker/login-action@v3
+      uses: docker/login-action@v4
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
@@ -240,7 +240,7 @@ jobs:
       uses: actions/checkout@v4
       
     - name: Log in to GitHub Container Registry
-      uses: docker/login-action@v3
+      uses: docker/login-action@v4
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
@@ -437,7 +437,7 @@ jobs:
         EOF
         
     - name: Upload deployment info
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: deployment-info
         path: deployment-info.json
@@ -451,7 +451,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
     - name: Download deployment info
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: deployment-info
         
