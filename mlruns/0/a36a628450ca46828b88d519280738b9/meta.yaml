@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/sfant/Desktop/myself/me/mlruns/0/a36a628450ca46828b88d519280738b9/artifacts
+end_time: 1749788203934
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: a36a628450ca46828b88d519280738b9
+run_name: illustrious-kite-448
+run_uuid: a36a628450ca46828b88d519280738b9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749788173570
+status: 4
+tags: []
+user_id: hp

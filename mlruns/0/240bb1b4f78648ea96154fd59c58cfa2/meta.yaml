@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/sfant/Desktop/myself/me/mlruns/0/240bb1b4f78648ea96154fd59c58cfa2/artifacts
+end_time: 1749788055198
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 240bb1b4f78648ea96154fd59c58cfa2
+run_name: silent-snake-156
+run_uuid: 240bb1b4f78648ea96154fd59c58cfa2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749787991357
+status: 4
+tags: []
+user_id: hp

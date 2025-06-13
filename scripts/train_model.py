@@ -18,6 +18,8 @@ import json
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
+
 def load_data(file_path='data/Mentalhealth.csv'):
     """Load and preprocess data"""
     try:
@@ -168,7 +170,7 @@ def main():
             mlflow.log_metric("f1_macro", metrics['classification_report']['macro avg']['f1-score'])
             
             # Log model
-            mlflow.sklearn.log_model(model, "model")
+            mlflow.sklearn.log_model(model, artifact_path="C:\\Users\\hp\\Documents\\GitHub\\Me\\artifacts")
             
             # Save model
             save_model(model, vectorizer, metrics)

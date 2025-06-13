@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/sfant/Desktop/myself/me/mlruns/0/35ee85cf6c454ec79070ca5d1bced056/artifacts
+end_time: 1749763808838
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 35ee85cf6c454ec79070ca5d1bced056
+run_name: victorious-midge-373
+run_uuid: 35ee85cf6c454ec79070ca5d1bced056
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749763777560
+status: 4
+tags: []
+user_id: hp

@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/sfant/Desktop/myself/me/mlruns/0/a16a9adf06374aa2b2cf519001e46084/artifacts
+end_time: 1749788366817
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: a16a9adf06374aa2b2cf519001e46084
+run_name: brawny-conch-372
+run_uuid: a16a9adf06374aa2b2cf519001e46084
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749788322880
+status: 3
+tags: []
+user_id: hp

@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/sfant/Desktop/myself/me/mlruns/0/9f57f5c4c69c41dbaf7d6342a877511f/artifacts
+end_time: 1749762969496
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 9f57f5c4c69c41dbaf7d6342a877511f
+run_name: lyrical-ox-505
+run_uuid: 9f57f5c4c69c41dbaf7d6342a877511f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749762920097
+status: 4
+tags: []
+user_id: hp
