@@ -16,16 +16,26 @@ logger = logging.getLogger(__name__)
 def analyze_text_patterns(df: pd.DataFrame) -> Dict:
     """Analyze text patterns and characteristics"""
     
+    # Filter out null values first
+    valid_statements = df['statement'].dropna()
+    
+    if len(valid_statements) == 0:
+        logger.warning("No valid text data found!")
+        return {}
+    
     # Basic text statistics
     text_stats = {
-        'avg_length': df['statement'].str.len().mean(),
-        'min_length': df['statement'].str.len().min(),
-        'max_length': df['statement'].str.len().max(),
-        'std_length': df['statement'].str.len().std()
+        'total_samples': len(df),
+        'valid_samples': len(valid_statements),
+        'null_samples': len(df) - len(valid_statements),
+        'avg_length': valid_statements.str.len().mean(),
+        'min_length': valid_statements.str.len().min(),
+        'max_length': valid_statements.str.len().max(),
+        'std_length': valid_statements.str.len().std()
     }
     
     # Word count statistics
-    word_counts = df['statement'].str.split().str.len()
+    word_counts = valid_statements.str.split().str.len()
     text_stats.update({
         'avg_words': word_counts.mean(),
         'min_words': word_counts.min(),
@@ -33,8 +43,8 @@ def analyze_text_patterns(df: pd.DataFrame) -> Dict:
         'std_words': word_counts.std()
     })
     
-    # Language patterns
-    all_text = ' '.join(df['statement'].values).lower()
+    # Language patterns - only use valid statements
+    all_text = ' '.join(valid_statements.values).lower()
     
     # Count common patterns
     patterns = {
@@ -42,7 +52,7 @@ def analyze_text_patterns(df: pd.DataFrame) -> Dict:
         'question_marks': all_text.count('?'),
         'periods': all_text.count('.'),
         'commas': all_text.count(','),
-        'uppercase_words': len(re.findall(r'\b[A-Z]{2,}\b', ' '.join(df['statement'].values)))
+        'uppercase_words': len(re.findall(r'\b[A-Z]{2,}\b', ' '.join(valid_statements.values)))
     }
     
     text_stats.update(patterns)
@@ -57,8 +67,22 @@ def detect_anomalies(df: pd.DataFrame) -> Dict:
         'inconsistencies': []
     }
     
+    # Filter out null values
+    valid_statements = df['statement'].dropna()
+    
+    if len(valid_statements) == 0:
+        anomalies['suspicious_patterns'].append("All statements are null!")
+        return anomalies
+    
+    # Report null values if any
+    null_count = len(df) - len(valid_statements)
+    if null_count > 0:
+        anomalies['suspicious_patterns'].append(
+            f"Found {null_count} null/empty statements ({null_count/len(df)*100:.1f}%)"
+        )
+    
     # Check for repeated patterns
-    text_counts = df['statement'].value_counts()
+    text_counts = valid_statements.value_counts()
     highly_repeated = text_counts[text_counts > 5]
     if len(highly_repeated) > 0:
         anomalies['suspicious_patterns'].append(
@@ -66,33 +90,43 @@ def detect_anomalies(df: pd.DataFrame) -> Dict:
         )
     
     # Check for very short/long texts
-    lengths = df['statement'].str.len()
+    lengths = valid_statements.str.len()
     q1, q3 = lengths.quantile([0.25, 0.75])
     iqr = q3 - q1
     outlier_threshold_low = q1 - 1.5 * iqr
     outlier_threshold_high = q3 + 1.5 * iqr
     
-    outliers = df[(lengths < outlier_threshold_low) | (lengths > outlier_threshold_high)]
-    if len(outliers) > 0:
+    outliers_mask = (lengths < outlier_threshold_low) | (lengths > outlier_threshold_high)
+    outlier_count = outliers_mask.sum()
+    if outlier_count > 0:
         anomalies['outliers'].append(
-            f"Found {len(outliers)} text length outliers"
+            f"Found {outlier_count} text length outliers"
         )
     
-    # Check for inconsistent labels
-    status_patterns = df.groupby('status')['statement'].apply(
-        lambda x: x.str.len().mean()
-    )
-    
-    if status_patterns.std() > 50:
-        anomalies['inconsistencies'].append(
-            "Large variation in text length between classes"
+    # Check for inconsistent labels - only use rows with valid statements
+    valid_df = df.dropna(subset=['statement'])
+    if len(valid_df) > 0:
+        status_patterns = valid_df.groupby('status')['statement'].apply(
+            lambda x: x.str.len().mean()
         )
+        
+        if len(status_patterns) > 1 and status_patterns.std() > 50:
+            anomalies['inconsistencies'].append(
+                "Large variation in text length between classes"
+            )
     
     return anomalies
 
 def generate_visualizations(df: pd.DataFrame, output_dir: str = "reports"):
     """Generate data quality visualizations"""
     Path(output_dir).mkdir(exist_ok=True)
+    
+    # Filter out null values for visualizations
+    valid_df = df.dropna(subset=['statement'])
+    
+    if len(valid_df) == 0:
+        logger.warning("No valid data for visualizations!")
+        return
     
     # Class distribution
     plt.figure(figsize=(10, 6))
@@ -105,17 +139,17 @@ def generate_visualizations(df: pd.DataFrame, output_dir: str = "reports"):
     plt.savefig(f"{output_dir}/class_distribution.png")
     plt.close()
     
-    # Text length distribution
+    # Text length distribution (only valid statements)
     plt.figure(figsize=(12, 4))
     
     plt.subplot(1, 2, 1)
-    df['statement'].str.len().hist(bins=30)
+    valid_df['statement'].str.len().hist(bins=30)
     plt.title('Text Length Distribution')
     plt.xlabel('Character Count')
     plt.ylabel('Frequency')
     
     plt.subplot(1, 2, 2)
-    df['statement'].str.split().str.len().hist(bins=30)
+    valid_df['statement'].str.split().str.len().hist(bins=30)
     plt.title('Word Count Distribution')
     plt.xlabel('Word Count')
     plt.ylabel('Frequency')
@@ -124,17 +158,38 @@ def generate_visualizations(df: pd.DataFrame, output_dir: str = "reports"):
     plt.savefig(f"{output_dir}/text_length_distribution.png")
     plt.close()
     
-    # Text length by class
+    # Text length by class (only valid statements)
     plt.figure(figsize=(10, 6))
-    df.boxplot(column='statement', by='status', 
-               ax=plt.gca(), 
-               figsize=(10, 6))
+    
+    # Create a temporary column for plotting
+    valid_df_copy = valid_df.copy()
+    valid_df_copy['text_length'] = valid_df_copy['statement'].str.len()
+    
+    # Use seaborn for better boxplot handling
+    sns.boxplot(data=valid_df_copy, x='status', y='text_length')
     plt.title('Text Length Distribution by Class')
-    plt.suptitle('')
     plt.ylabel('Character Count')
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(f"{output_dir}/length_by_class.png")
+    plt.close()
+    
+    # Add a data quality summary plot
+    plt.figure(figsize=(10, 6))
+    quality_stats = {
+        'Valid Samples': len(valid_df),
+        'Null Samples': len(df) - len(valid_df),
+        'Unique Samples': valid_df['statement'].nunique()
+    }
+    
+    plt.bar(quality_stats.keys(), quality_stats.values())
+    plt.title('Data Quality Overview')
+    plt.ylabel('Count')
+    plt.xticks(rotation=45)
+    for i, v in enumerate(quality_stats.values()):
+        plt.text(i, v + max(quality_stats.values()) * 0.01, str(v), ha='center')
+    plt.tight_layout()
+    plt.savefig(f"{output_dir}/data_quality_overview.png")
     plt.close()
 
 def save_quality_report(report: Dict, output_path: str = "reports/quality_report.json"):

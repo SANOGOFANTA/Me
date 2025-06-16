@@ -158,7 +158,7 @@ def main():
         
         if test_df is None:
             # Use training data for evaluation (split it)
-            from scripts.train_model import load_data, prepare_features
+            from train_model import load_data, prepare_features
             from sklearn.model_selection import train_test_split
             
             df = load_data()
@@ -167,7 +167,7 @@ def main():
                 X, y, test_size=0.2, random_state=42, stratify=y
             )
         else:
-            from scripts.train_model import prepare_features
+            from train_model import prepare_features
             X_test, y_test = prepare_features(test_df)
         
         # Evaluate model

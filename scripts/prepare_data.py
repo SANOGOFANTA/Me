@@ -97,7 +97,7 @@ def validate_data_quality(df):
 def main():
     """Main data preparation function"""
     parser = argparse.ArgumentParser(description='Prepare training data')
-    parser.add_argument('--input', default='data/sentiment_data.csv', 
+    parser.add_argument('--input', default='data/Mentalhealth.csv', 
                        help='Input data file')
     parser.add_argument('--output-dir', default='data', 
                        help='Output directory')

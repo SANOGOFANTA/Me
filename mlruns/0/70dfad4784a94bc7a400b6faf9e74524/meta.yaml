@@ -1,0 +1,15 @@
+artifact_uri: file:C:/Users/hp/Documents/GitHub/Me/mlruns/0/70dfad4784a94bc7a400b6faf9e74524/artifacts
+end_time: 1750115905760
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 70dfad4784a94bc7a400b6faf9e74524
+run_name: mercurial-snipe-222
+run_uuid: 70dfad4784a94bc7a400b6faf9e74524
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1750115845368
+status: 3
+tags: []
+user_id: hp
