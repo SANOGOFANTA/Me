@@ -1,6 +1,6 @@
 {
   "model_type": "LogisticRegression",
-  "training_date": "2025-06-13T06:19:26.813528",
+  "training_date": "2025-06-16T13:48:32.996627",
   "accuracy": 0.7610325519597608,
   "classes": [
     "Anxiety",
