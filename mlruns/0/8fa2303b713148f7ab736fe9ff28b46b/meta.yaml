@@ -1,4 +1,4 @@
-artifact_uri: file:///C:/Users/sfant/Desktop/myself/me/mlruns/0/8fa2303b713148f7ab736fe9ff28b46b/artifacts
+artifact_uri: file:///C:/Users/hp/Documents/GitHub/me/mlruns/0/8fa2303b713148f7ab736fe9ff28b46b/artifacts
 end_time: 1748875327894
 entry_point_name: ''
 experiment_id: '0'
@@ -12,4 +12,4 @@ source_version: ''
 start_time: 1748875286546
 status: 3
 tags: []
-user_id: sfant
+user_id: hp
