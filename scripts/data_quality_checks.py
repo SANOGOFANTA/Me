@@ -146,7 +146,7 @@ def save_quality_report(report: Dict, output_path: str = "reports/quality_report
 
 def main():
     """Main data quality check function"""
-    data_file = "data/sentiment_data.csv"
+    data_file = "data/Mentalhealth.csv"
     
     logger.info("Starting comprehensive data quality checks...")
     
