@@ -141,6 +141,7 @@ def save_model(model, vectorizer, metrics, model_dir='models'):
 def main():
     """Main training pipeline"""
     try:
+        mlflow.set_tracking_uri("file:./mlruns")
         # Start MLflow run
         with mlflow.start_run():
             # Load data
